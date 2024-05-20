@@ -48,14 +48,12 @@ def rc_dao():
 
 
 @pytest.fixture
-def rc_readiness_0():
+def rc_readiness_len_0():
     dao = MagicMock()
     dao.find.return_value = recipes
     rc = RecipeController(dao)
     rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = {
-        "recipe1": 0.0,
-    }
+    rc.get_readiness_of_recipes.return_value = {}
     return rc
 
 @pytest.fixture
@@ -80,20 +78,20 @@ def rc_readiness_1():
     }
     return rc
 
-def randint_0(values):
+def randint_0(value1, value2):
     return 0
 
 
 
 @pytest.mark.unit
-def test_case_1(rc_readiness_0):
+def test_case_1(rc_readiness_len_0):
     """
         get recipe with readiness 0
 
         expected: None
     """
     diet: Diet = from_string("vegetarian")
-    recipe = rc_readiness_0.get_recipe(diet, take_best=True)
+    recipe = rc_readiness_len_0.get_recipe(diet, take_best=True)
 
     assert recipe == None
 
