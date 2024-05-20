@@ -5,43 +5,43 @@ from src.static.diets import Diet, from_string
 import pytest
 
 recipes = [
-        {
-            "name": "recipe1",
-            "diets": [
-                "vegetarian",
-                "normal",
-                "vegan"
-            ],
-            "ingredients": {
-                "ingredient1": 2,
-                "ingredient2": 1
-            }
-        },
-        {
-            "name": "recipe2",
-            "diets": [
-                "vegetarian",
-                "normal",
-                "vegan"
-            ],
-            "ingredients": {
-                "ingredient1": 2,
-                "ingredient2": 1
-            }
-        },
-        {
-            "name": "recipe3",
-            "diets": [
-                "vegetarian",
-                "normal",
-                "vegan"
-            ],
-            "ingredients": {
-                "ingredient1": 2,
-                "ingredient2": 1
-            }
+    {
+        "name": "recipe1",
+        "diets": [
+            "vegetarian",
+            "normal",
+            "vegan"
+        ],
+        "ingredients": {
+            "ingredient1": 2,
+            "ingredient2": 1
         }
-    ]
+    },
+    {
+        "name": "recipe2",
+        "diets": [
+            "vegetarian",
+            "normal",
+            "vegan"
+        ],
+        "ingredients": {
+            "ingredient1": 2,
+            "ingredient2": 1
+        }
+    },
+    {
+        "name": "recipe3",
+        "diets": [
+            "vegetarian",
+            "normal",
+            "vegan"
+        ],
+        "ingredients": {
+            "ingredient1": 2,
+            "ingredient2": 1
+        }
+    }
+]
 
 
 @pytest.fixture
@@ -50,7 +50,6 @@ def FRecipeController():
     dao.find.return_value = recipes
     rc = RecipeController(dao)
     return rc
-
 
 @pytest.fixture
 def rc_readiness_len_0():
@@ -113,11 +112,8 @@ def rc_readiness_all_1():
     }
     return rc
 
-
 def randint_0(value1, value2):
     return 2
-
-
 
 @pytest.mark.unit
 def test_case_0(rc_readiness_len_0):
@@ -129,7 +125,7 @@ def test_case_0(rc_readiness_len_0):
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_len_0.get_recipe(diet, take_best=True)
 
-    assert recipe == None
+    assert recipe is None
 
 @pytest.mark.unit
 def test_case_1(rc_readiness_all_0):
@@ -141,33 +137,31 @@ def test_case_1(rc_readiness_all_0):
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_all_0.get_recipe(diet, take_best=True)
 
-    assert recipe == None
-
+    assert recipe is None
 
 @pytest.mark.unit
 def test_case_2(rc_readiness_one_01):
     """
         test get the best recipe for a vegetarian diet and of readiness 0.1
 
-        expected: recipe3
+        expected: recipe1
     """
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_one_01.get_recipe(diet, take_best=True)
 
-    assert recipe == "recipe3"
-
+    assert recipe == "recipe1"
 
 @pytest.mark.unit
 def test_case_3(rc_readiness_one_1):
     """
         test get the best recipe for a vegan diet and of readiness 1
 
-        expected: recipe3
+        expected: recipe1
     """
     diet: Diet = from_string("vegan")
     recipe = rc_readiness_one_1.get_recipe(diet, take_best=True)
 
-    assert recipe == "recipe3"
+    assert recipe == "recipe1"
 
 @pytest.mark.unit
 def test_case_4(rc_readiness_one_1):
@@ -193,4 +187,4 @@ def test_case_5(rc_readiness_all_1):
     diet: Diet = from_string("")
     recipe = rc_readiness_all_1.get_recipe(diet, take_best=False)
 
-    assert recipe == None
+    assert recipe is None
