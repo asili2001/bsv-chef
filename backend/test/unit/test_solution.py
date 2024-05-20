@@ -80,7 +80,7 @@ def rc_readiness_1():
     }
     return rc
 
-def randint_0():
+def randint_0(values):
     return 0
 
 
