@@ -100,7 +100,7 @@ def randint_0(value1, value2):
 
 
 @pytest.mark.unit
-def test_case_1(rc_readiness_len_0):
+def test_case_0(rc_readiness_len_0):
     """
         get recipe with readiness 0
 
