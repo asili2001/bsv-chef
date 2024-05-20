@@ -1,8 +1,7 @@
-import random
 from unittest import mock
 from unittest.mock import MagicMock
-from backend.src.controllers.recipecontroller import RecipeController
-from backend.src.static.diets import Diet, from_string
+from src.controllers.recipecontroller import RecipeController
+from src.static.diets import Diet, from_string
 import pytest
 
 
