@@ -8,7 +8,6 @@ recipes = [
         {
             "name": "recipe1",
             "diets": [
-                "normal",
                 "vegetarian"
             ],
             "ingredients": {
@@ -27,7 +26,7 @@ recipes = [
             }
         },
         {
-            "name": "random recipe",
+            "name": "recipe3",
             "diets": [
                 "vegan"
             ],
@@ -40,7 +39,7 @@ recipes = [
 
 
 @pytest.fixture
-def rc_dao():
+def FRecipeController():
     dao = MagicMock()
     dao.find.return_value = recipes
     rc = RecipeController(dao)
@@ -57,6 +56,19 @@ def rc_readiness_len_0():
     return rc
 
 @pytest.fixture
+def rc_readiness_0():
+    dao = MagicMock()
+    dao.find.return_value = recipes
+    rc = RecipeController(dao)
+    rc.get_readiness_of_recipes = MagicMock()
+    rc.get_readiness_of_recipes.return_value = {
+        "recipe1": 0.0,
+        "recipe2": 0.0,
+        "recipe3": 0.0
+    }
+    return rc
+
+@pytest.fixture
 def rc_readiness_05():
     dao = MagicMock()
     dao.find.return_value = recipes
@@ -64,6 +76,8 @@ def rc_readiness_05():
     rc.get_readiness_of_recipes = MagicMock()
     rc.get_readiness_of_recipes.return_value = {
         "recipe1": 0.5,
+        "recipe2": 0.5,
+        "recipe3": 1
     }
     return rc
 
@@ -74,7 +88,9 @@ def rc_readiness_1():
     rc = RecipeController(dao)
     rc.get_readiness_of_recipes = MagicMock()
     rc.get_readiness_of_recipes.return_value = {
-        "recipe1": 1.0,
+        "recipe1": 0,
+        "recipe2": 0.5,
+        "recipe3": 1
     }
     return rc
 
@@ -95,6 +111,18 @@ def test_case_1(rc_readiness_len_0):
 
     assert recipe == None
 
+@pytest.mark.unit
+def test_case_1(rc_readiness_0):
+    """
+        get recipe with readiness 0
+
+        expected: None
+    """
+    diet: Diet = from_string("vegetarian")
+    recipe = rc_readiness_0.get_recipe(diet, take_best=True)
+
+    assert recipe == None
+
 
 @pytest.mark.unit
 def test_case_2(rc_readiness_05):
@@ -106,7 +134,7 @@ def test_case_2(rc_readiness_05):
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_05.get_recipe(diet, take_best=True)
 
-    assert recipe == recipes[0].get("name")
+    assert recipe == "recipe1"
 
 
 @pytest.mark.unit
@@ -114,26 +142,26 @@ def test_case_3(rc_readiness_05):
     """
         test get the best recipe for a vegan diet and of readiness 1
 
-        expected: recipe2
+        expected: recipe3
     """
     diet: Diet = from_string("vegan")
     recipe = rc_readiness_05.get_recipe(diet, take_best=True)
 
-    assert recipe == recipes[1].get("name")
+    assert recipe == "recipe3"
 
 @pytest.mark.unit
 def test_case_4(rc_readiness_1):
     """
         test get a random recipe for a vegan diet and of readiness 1
 
-        expected: random recipe
+        expected: recipe1
     """
     diet: Diet = from_string("vegan")
 
     with mock.patch('random.randint', randint_0):
-        recipe = rc_readiness_1.get_recipe(diet, take_best=True)
+        recipe = rc_readiness_1.get_recipe(diet, take_best=False)
 
-        assert recipe == recipes[2].get("name")
+        assert recipe == "recipe1"
 
 @pytest.mark.unit
 def test_case_5(rc_readiness_05):
@@ -142,7 +170,7 @@ def test_case_5(rc_readiness_05):
 
         expected: None
     """
-    diet: Diet = from_string("vegan")
+    diet: Diet = from_string("UnavailableDiet")
     recipe = rc_readiness_05.get_recipe(diet, take_best=False)
 
     assert recipe == None
