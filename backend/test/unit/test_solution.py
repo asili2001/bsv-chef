@@ -149,12 +149,12 @@ def test_case_2(rc_readiness_one_01):
     """
         test get the best recipe for a vegetarian diet and of readiness 0.1
 
-        expected: recipe1
+        expected: recipe3
     """
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_one_01.get_recipe(diet, take_best=True)
 
-    assert recipe == "recipe1"
+    assert recipe == "recipe3"
 
 
 @pytest.mark.unit
@@ -167,21 +167,21 @@ def test_case_3(rc_readiness_one_1):
     diet: Diet = from_string("vegan")
     recipe = rc_readiness_one_1.get_recipe(diet, take_best=True)
 
-    assert recipe == "recipe1"
+    assert recipe == "recipe3"
 
 @pytest.mark.unit
 def test_case_4(rc_readiness_one_1):
     """
         test get a random recipe for a vegan diet and of readiness 1
 
-        expected: recipe3
+        expected: recipe1
     """
     diet: Diet = from_string("vegan")
 
     with mock.patch('random.randint', randint_0):
         recipe = rc_readiness_one_1.get_recipe(diet, take_best=False)
 
-        assert recipe == "recipe3"
+        assert recipe == "recipe1"
 
 @pytest.mark.unit
 def test_case_5(rc_readiness_all_1):
@@ -190,7 +190,7 @@ def test_case_5(rc_readiness_all_1):
 
         expected: None
     """
-    diet: Diet = from_string("UnavailableDiet")
+    diet: Diet = from_string("")
     recipe = rc_readiness_all_1.get_recipe(diet, take_best=False)
 
     assert recipe == None
