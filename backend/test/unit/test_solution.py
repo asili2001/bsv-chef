@@ -108,7 +108,7 @@ def test_case_2(rc_readiness_05):
     diet: Diet = from_string("vegetarian")
     recipe = rc_readiness_05.get_recipe(diet, take_best=True)
 
-    assert recipe == recipes[0]
+    assert recipe == recipes[0].get("name")
 
 
 @pytest.mark.unit
@@ -121,7 +121,7 @@ def test_case_3(rc_readiness_05):
     diet: Diet = from_string("vegan")
     recipe = rc_readiness_05.get_recipe(diet, take_best=True)
 
-    assert recipe == recipes[1]
+    assert recipe == recipes[1].get("name")
 
 @pytest.mark.unit
 def test_case_4(rc_readiness_1):
@@ -135,7 +135,7 @@ def test_case_4(rc_readiness_1):
     with mock.patch('random.randint', randint_0):
         recipe = rc_readiness_1.get_recipe(diet, take_best=True)
 
-        assert recipe == recipes[2]
+        assert recipe == recipes[2].get("name")
 
 @pytest.mark.unit
 def test_case_5(rc_readiness_05):
