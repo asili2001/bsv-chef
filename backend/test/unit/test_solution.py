@@ -4,7 +4,6 @@ from src.controllers.recipecontroller import RecipeController
 from src.static.diets import Diet, from_string
 import pytest
 
-
 recipes = [
         {
             "name": "recipe1",
@@ -39,29 +38,45 @@ recipes = [
         }
     ]
 
+
+@pytest.fixture
+def rc_dao():
+    dao = MagicMock()
+    dao.find.return_value = recipes
+    rc = RecipeController(dao)
+    return rc
+
+
 @pytest.fixture
 def rc_readiness_0():
     dao = MagicMock()
-    dao.find.return_value = None
+    dao.find.return_value = recipes
     rc = RecipeController(dao)
+    rc.get_readiness_of_recipes = MagicMock()
+    rc.get_readiness_of_recipes.return_value = 0.0
     return rc
 
 @pytest.fixture
 def rc_readiness_05():
     dao = MagicMock()
-    dao.find.return_value = recipes[0]
+    dao.find.return_value = recipes
     rc = RecipeController(dao)
+    rc.get_readiness_of_recipes = MagicMock()
+    rc.get_readiness_of_recipes.return_value = 0.5
     return rc
 
 @pytest.fixture
 def rc_readiness_1():
     dao = MagicMock()
-    dao.find.return_value = recipes[2]
+    dao.find.return_value = recipes
     rc = RecipeController(dao)
+    rc.get_readiness_of_recipes = MagicMock()
+    rc.get_readiness_of_recipes.return_value = 1.0
     return rc
 
 def randint_0():
     return 0
+
 
 
 @pytest.mark.unit
