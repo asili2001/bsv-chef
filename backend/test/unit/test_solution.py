@@ -43,21 +43,21 @@ recipes = [
 def rc_readiness_0():
     dao = MagicMock()
     dao.find.return_value = None
-    rc = RecipeController()
+    rc = RecipeController(dao)
     return rc
 
 @pytest.fixture
 def rc_readiness_05():
     dao = MagicMock()
     dao.find.return_value = recipes[0]
-    rc = RecipeController()
+    rc = RecipeController(dao)
     return rc
 
 @pytest.fixture
 def rc_readiness_1():
     dao = MagicMock()
     dao.find.return_value = recipes[2]
-    rc = RecipeController()
+    rc = RecipeController(dao)
     return rc
 
 def randint_0():
