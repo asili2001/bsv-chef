@@ -5,30 +5,6 @@ from src.static.diets import Diet, from_string
 import pytest
 
 
-@pytest.fixture
-def rc_readiness_0():
-    rc = RecipeController()
-    rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 0.0
-    return rc
-
-@pytest.fixture
-def rc_readiness_05():
-    rc = RecipeController()
-    rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 0.5
-    return rc
-
-@pytest.fixture
-def rc_readiness_1():
-    rc = RecipeController()
-    rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 1.0
-    return rc
-
-def randint_0():
-    return 0
-
 recipes = [
         {
             "name": "recipe1",
@@ -62,6 +38,31 @@ recipes = [
             }
         }
     ]
+
+@pytest.fixture
+def rc_readiness_0():
+    dao = MagicMock()
+    dao.find.return_value = None
+    rc = RecipeController()
+    return rc
+
+@pytest.fixture
+def rc_readiness_05():
+    dao = MagicMock()
+    dao.find.return_value = recipes[0]
+    rc = RecipeController()
+    return rc
+
+@pytest.fixture
+def rc_readiness_1():
+    dao = MagicMock()
+    dao.find.return_value = recipes[2]
+    rc = RecipeController()
+    return rc
+
+def randint_0():
+    return 0
+
 
 @pytest.mark.unit
 def test_case_1(rc_readiness_0):
@@ -102,7 +103,7 @@ def test_case_3(rc_readiness_05):
     assert recipe == recipes[1]
 
 @pytest.mark.unit
-def test_case_4(rc_readiness_05):
+def test_case_4(rc_readiness_1):
     """
         test get a random recipe for a vegan diet and of readiness 1
 
@@ -111,7 +112,7 @@ def test_case_4(rc_readiness_05):
     diet: Diet = from_string("vegan")
 
     with mock.patch('random.randint', randint_0):
-        recipe = rc_readiness_05.get_recipe(diet, take_best=True)
+        recipe = rc_readiness_1.get_recipe(diet, take_best=True)
 
         assert recipe == recipes[2]
 
