@@ -53,7 +53,9 @@ def rc_readiness_0():
     dao.find.return_value = recipes
     rc = RecipeController(dao)
     rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 0.0
+    rc.get_readiness_of_recipes.return_value = {
+        "recipe1": 0.0,
+    }
     return rc
 
 @pytest.fixture
@@ -62,7 +64,9 @@ def rc_readiness_05():
     dao.find.return_value = recipes
     rc = RecipeController(dao)
     rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 0.5
+    rc.get_readiness_of_recipes.return_value = {
+        "recipe1": 0.5,
+    }
     return rc
 
 @pytest.fixture
@@ -71,7 +75,9 @@ def rc_readiness_1():
     dao.find.return_value = recipes
     rc = RecipeController(dao)
     rc.get_readiness_of_recipes = MagicMock()
-    rc.get_readiness_of_recipes.return_value = 1.0
+    rc.get_readiness_of_recipes.return_value = {
+        "recipe1": 1.0,
+    }
     return rc
 
 def randint_0():
